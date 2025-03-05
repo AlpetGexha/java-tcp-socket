@@ -1,9 +1,10 @@
 import java.io.*;
 import java.net.*;
+import java.util.Scanner;
 
 public class TCPServer {
     public static void main(String[] args) {
-        int port = 5050; // Port must match the port in VirtualBox forwarding
+        int port = 5060;
 
         try (ServerSocket serverSocket = new ServerSocket(port)) {
             System.out.println("Server is listening on port " + port);
@@ -12,16 +13,7 @@ public class TCPServer {
                 Socket socket = serverSocket.accept();
                 System.out.println("New client connected");
 
-                BufferedReader input = new BufferedReader(new InputStreamReader(socket.getInputStream()));
-                PrintWriter output = new PrintWriter(socket.getOutputStream(), true);
-
-                String message;
-                while ((message = input.readLine()) != null) {
-                    System.out.println("Received: " + message);
-                    output.println("Server received: " + message); // Send response
-                }
-
-                socket.close();
+                new ClientHandler(socket).start();
             }
         } catch (IOException e) {
             e.printStackTrace();

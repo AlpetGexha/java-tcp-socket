@@ -4,8 +4,11 @@ import java.util.Scanner;
 
 public class TCPClient {
     public static void main(String[] args) {
-        String serverAddress = "localhost"; // Change to your Windows machine IP if needed
-        int serverPort = 5050;
+        String serverAddress = "localhost";
+//        String serverAddress = "192.168.58.101"; // Kali Linux
+//        String serverAddress = "192.168.58.102"; // Ubuntu
+
+        int serverPort = 5060;
 
         try (Socket socket = new Socket(serverAddress, serverPort);
              PrintWriter output = new PrintWriter(socket.getOutputStream(), true);
@@ -14,28 +17,32 @@ public class TCPClient {
 
             System.out.println("Connected to server. Type a message ('exit' to quit):");
 
-            while (true) {
-                System.out.print("You: ");
-                String userInput = scanner.nextLine(); // Get input from user
-
-                if ("exit".equalsIgnoreCase(userInput)) {
-                    System.out.println("Closing connection...");
-                    break;
+            Thread sendThread = new Thread(() -> {
+                while (true) {
+                    System.out.print("You: ");
+                    String userInput = scanner.nextLine();
+                    if ("exit".equalsIgnoreCase(userInput)) {
+                        System.out.println("Closing connection...");
+                        try {
+                            socket.close();
+                        } catch (IOException e) {
+                            e.printStackTrace();
+                        }
+                        break;
+                    }
+                    output.println(userInput);
                 }
+            });
 
-                output.println(userInput); // Send message to server
+            sendThread.start();
 
-                String response = input.readLine(); // Read server response
-                if (response == null) {
-                    System.out.println("Server disconnected.");
-                    break;
-                }
-
-                System.out.println("Server says: " + response);
+            String serverMessage;
+            while ((serverMessage = input.readLine()) != null) {
+                System.out.println("Server: " + serverMessage);
             }
-
         } catch (IOException e) {
             System.err.println("Connection error: " + e.getMessage());
         }
     }
+
 }
