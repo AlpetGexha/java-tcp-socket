@@ -27,7 +27,7 @@ abstract class ClientHandler extends Thread {
             HasTitleContract contract = (HasTitleContract) this;
             output.println(contract.getTitle());
             output.println(contract.getDescription());
-            contract.showTitleAndDescription();
+//            contract.showTitleAndDescription();
         }
         handleClient();
     }
