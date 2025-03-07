@@ -5,8 +5,8 @@ import java.util.Scanner;
 public class TCPClient {
     public static void main(String[] args) {
         String serverAddress = "localhost";
-//        String serverAddress = "192.168.58.101"; // Kali Linux
-//        String serverAddress = "192.168.58.102"; // Ubuntu
+        // String serverAddress = "192.168.58.101"; // Kali Linux
+        // String serverAddress = "192.168.58.102"; // Ubuntu
 
         int serverPort = 5060;
 
@@ -44,5 +44,4 @@ public class TCPClient {
             System.err.println("Connection error: " + e.getMessage());
         }
     }
-
 }

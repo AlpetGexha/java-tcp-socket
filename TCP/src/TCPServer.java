@@ -1,10 +1,10 @@
-import java.io.*;
-import java.net.*;
+import java.io.IOException;
+import java.net.ServerSocket;
+import java.net.Socket;
 import java.util.concurrent.atomic.AtomicInteger;
 
 public class TCPServer {
-//    one at a time on multi threaded server
-    private static AtomicInteger clientCounter = new AtomicInteger(0);
+    private static final AtomicInteger clientCounter = new AtomicInteger(0);
 
     public static void main(String[] args) {
         int port = 5060;
@@ -17,7 +17,9 @@ public class TCPServer {
                 int clientId = clientCounter.incrementAndGet();
                 System.out.println("New client connected: Client " + clientId);
 
-                new ClientHandler(socket, clientId).start();
+//                new LiveChatHandler(socket, clientId).start();
+                 new PrimeHandler(socket, clientId).start();
+
             }
         } catch (IOException e) {
             e.printStackTrace();
