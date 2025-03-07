@@ -1,13 +1,13 @@
 import java.io.IOException;
 import java.net.Socket;
 
-class PrimeHandler extends ClientHandler {
+class PrimeHandler extends ClientHandler implements HasTitleContract {
     public PrimeHandler(Socket socket, int clientId) throws IOException {
         super(socket, clientId);
     }
 
     @Override
-    public void run() {
+    public void handleClient() {
         try {
             int value = Integer.parseInt(input.readLine());
             String clientMessage;
@@ -40,5 +40,16 @@ class PrimeHandler extends ClientHandler {
 
     private boolean isEven(int n) {
         return n % 2 == 0;
+    }
+
+
+    @Override
+    public String getTitle() {
+        return "Prime Handler";
+    }
+
+    @Override
+    public String getDescription() {
+        return "Handles prime number and even/odd checks for the client.";
     }
 }

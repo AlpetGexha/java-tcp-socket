@@ -8,7 +8,7 @@ class LiveChatHandler extends ClientHandler {
     }
 
     @Override
-    public void run() {
+    public void handleClient() {
         try (Scanner scanner = new Scanner(System.in)) {
             Thread sendThread = new Thread(() -> {
                 while (true) {
