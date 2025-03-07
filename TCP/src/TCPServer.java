@@ -16,12 +16,14 @@ public class TCPServer {
                 Socket socket = serverSocket.accept();
                 int clientId = clientCounter.incrementAndGet();
                 System.out.println("New client connected: Client " + clientId);
-
 //                new LiveChatHandler(socket, clientId).start();
-                 new PrimeHandler(socket, clientId).start();
+                new PrimeHandler(socket, clientId).start();
 
             }
         } catch (IOException e) {
+            e.printStackTrace();
+        }
+        catch (Exception e) {
             e.printStackTrace();
         }
     }

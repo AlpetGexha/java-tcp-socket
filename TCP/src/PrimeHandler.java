@@ -14,11 +14,15 @@ class PrimeHandler extends ClientHandler {
 
             while ((clientMessage = input.readLine()) != null) {
                 System.out.println("Client " + clientId + ": " + clientMessage);
-                output.println("Server: " + (isPrime(value) ? "Prime" : "Not Prime"));
-                output.println("Server: " + (isEven(value) ? "Even" : "Odd"));
+                String primeMessage = "Server: " + (isPrime(value) ? "Prime" : "Not Prime");
+                String evenMessage = "Server: " + (isEven(value) ? "Even" : "Odd");
+                logToServer(primeMessage); // Display on server side
+                logToServer(evenMessage); // Display on server side
+                output.println(primeMessage); // Send to client
+                output.println(evenMessage); // Send to client
             }
         } catch (IOException e) {
-            e.printStackTrace();
+            System.err.println("Error handling client " + clientId + ": " + e.getMessage());
         }
     }
 

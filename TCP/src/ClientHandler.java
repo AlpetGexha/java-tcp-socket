@@ -17,6 +17,10 @@ abstract class ClientHandler extends Thread {
         this.output = new PrintWriter(socket.getOutputStream(), true);
     }
 
+    protected void logToServer(String message) {
+        System.out.println(message);
+    }
+
     @Override
     public abstract void run();
 }
