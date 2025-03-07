@@ -1,5 +1,6 @@
 import java.io.IOException;
 import java.net.Socket;
+import java.util.Scanner;
 
 class PrimeHandler extends ClientHandler implements HasTitleContract {
     public PrimeHandler(Socket socket, int clientId) throws IOException {
@@ -9,24 +10,34 @@ class PrimeHandler extends ClientHandler implements HasTitleContract {
     @Override
     public void handleClient() {
         try {
-            int value = Integer.parseInt(input.readLine());
             String clientMessage;
 
             while ((clientMessage = input.readLine()) != null) {
                 System.out.println("Client " + clientId + ": " + clientMessage);
-                String primeMessage = "Server: " + (isPrime(value) ? "Prime" : "Not Prime");
-                String evenMessage = "Server: " + (isEven(value) ? "Even" : "Odd");
-                logToServer(primeMessage); // Display on server side
-                logToServer(evenMessage); // Display on server side
-                output.println(primeMessage); // Send to client
-                output.println(evenMessage); // Send to client
+
+                // Process the input from client as a number
+                int value;
+                try {
+                    value = Integer.parseInt(clientMessage);
+                } catch (NumberFormatException e) {
+                    output.println("Please enter a valid number");
+                    continue;
+                }
+
+                String primeMessage = (isPrime(value) ? "Prime" : "Not Prime");
+                String evenMessage = (isEven(value) ? "Even" : "Odd");
+
+                output.println(primeMessage);
+                output.println(evenMessage);
+                logToServer("Client " + clientId + " Process success");
             }
         } catch (IOException e) {
             System.err.println("Error handling client " + clientId + ": " + e.getMessage());
         }
     }
 
-    private boolean isPrime(int n) {
+
+    private static boolean isPrime(int n) {
         if (n <= 1) {
             return false;
         }
@@ -38,7 +49,7 @@ class PrimeHandler extends ClientHandler implements HasTitleContract {
         return true;
     }
 
-    private boolean isEven(int n) {
+    private static boolean isEven(int n) {
         return n % 2 == 0;
     }
 
