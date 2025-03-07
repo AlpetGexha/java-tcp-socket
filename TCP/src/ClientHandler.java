@@ -23,12 +23,11 @@ abstract class ClientHandler extends Thread {
 
     @Override
     public void run() {
-        if (this instanceof HasTitleContract) {
-            HasTitleContract contract = (HasTitleContract) this;
+        if (this instanceof HasTitleContract contract) {
             output.println(contract.getTitle());
             output.println(contract.getDescription());
-//            contract.showTitleAndDescription();
         }
+
         handleClient();
     }
 
