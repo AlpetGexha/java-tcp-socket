@@ -6,7 +6,7 @@ import java.net.Socket;
 import java.util.Scanner;
 
 class ClientHandler extends Thread {
-    private Socket socket;
+    private final Socket socket;
     private boolean isLiveChat;
 
     public ClientHandler(Socket socket) {
