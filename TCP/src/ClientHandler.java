@@ -7,10 +7,12 @@ import java.util.Scanner;
 
 class ClientHandler extends Thread {
     private final Socket socket;
+    private final int clientId;
     private boolean isLiveChat;
 
-    public ClientHandler(Socket socket) {
+    public ClientHandler(Socket socket, int clientId) {
         this.socket = socket;
+        this.clientId = clientId;
         this.isLiveChat = true;
     }
 
@@ -20,6 +22,7 @@ class ClientHandler extends Thread {
                 PrintWriter output = new PrintWriter(socket.getOutputStream(), true);
                 Scanner scanner = new Scanner(System.in)
         ) {
+            String clientMessage;
 
             if (isLiveChat) {
                 Thread sendThread = new Thread(() -> {
@@ -32,19 +35,16 @@ class ClientHandler extends Thread {
 
                 sendThread.start();
 
-                String clientMessage;
                 while ((clientMessage = input.readLine()) != null) {
-                    System.out.println("Client: " + clientMessage);
+                    System.out.println("Client " + clientId + ": " + clientMessage);
                 }
             }
-
-            String clientMessage;
 
             if (!this.isLiveChat) {
                 int value = Integer.parseInt(input.readLine());
 
                 while ((clientMessage = input.readLine()) != null) {
-                    System.out.println("Client: " + clientMessage);
+                    System.out.println("Client " + clientId + ": " + clientMessage);
                     System.out.println("Server: " + (isPrime(value) ? "Prime" : "Not Prime"));
                     System.out.println("Server: " + (isEven(value) ? "Even" : "Odd"));
                 }
@@ -53,7 +53,6 @@ class ClientHandler extends Thread {
             e.printStackTrace();
         }
     }
-
 
     public boolean isPrime(int n) {
         if (n <= 1) {
