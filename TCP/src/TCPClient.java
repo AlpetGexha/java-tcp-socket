@@ -4,7 +4,7 @@ import java.util.Scanner;
 
 public class TCPClient {
     public static void main(String[] args) {
-        String serverAddress = "localhost";
+        String serverAddress = ServersType.LOCALHOST.getIpAddress();
         // String serverAddress = "192.168.58.101"; // Kali Linux
         // String serverAddress = "192.168.58.102"; // Ubuntu
 
