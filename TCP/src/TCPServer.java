@@ -3,12 +3,15 @@ import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.concurrent.atomic.AtomicInteger;
 
-public class TCPServer {
+public abstract class TCPServer {
+    private final int port;
     private static final AtomicInteger clientCounter = new AtomicInteger(0);
 
-    public static void main(String[] args) {
-        int port = 5060;
+    public TCPServer(int port) {
+        this.port = port;
+    }
 
+    public void start() {
         try (ServerSocket serverSocket = new ServerSocket(port)) {
             System.out.println("Server is listening on port " + port);
 
@@ -17,13 +20,13 @@ public class TCPServer {
                 int clientId = clientCounter.incrementAndGet();
                 System.out.println("New client connected: Client " + clientId);
 
-//                new LiveChatHandler(socket, clientId).start();
-//                new PrimeHandler(socket, clientId).start();
-                new HangmanHandler(socket, clientId).start();
-
+                ClientHandler handler = createHandler(socket, clientId);
+                new Thread(handler).start();
             }
         } catch (IOException e) {
             e.printStackTrace();
         }
     }
+
+    protected abstract ClientHandler createHandler(Socket socket, int clientId) throws IOException;
 }
