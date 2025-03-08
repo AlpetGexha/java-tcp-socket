@@ -42,3 +42,10 @@ sudo wget  https://download.java.net/java/GA/jdk23.0.2/6da2a6609d6e406f85c491fcb
 
 tar xvf openjdk-23.0.2_linux-x64_bin.tar.gz
 ```
+
+
+### PORTS
+
+- **5060** - Prime Server
+- **5061** - Hangman Server
+- **5062** - LiveChat Server
