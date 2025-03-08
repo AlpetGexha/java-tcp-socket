@@ -21,7 +21,13 @@ public abstract class TCPServer {
                 System.out.println("New client connected: Client " + clientId);
 
                 ClientHandler handler = createHandler(socket, clientId);
-                new Thread(handler).start();
+                new Thread(() -> {
+                    try {
+                        handler.run();
+                    } catch (Exception e) {
+                        handleError(e, clientId);
+                    }
+                }).start();
             }
         } catch (IOException e) {
             e.printStackTrace();
@@ -29,4 +35,9 @@ public abstract class TCPServer {
     }
 
     protected abstract ClientHandler createHandler(Socket socket, int clientId) throws IOException;
+
+    protected void handleError(Exception e, int clientId) {
+        System.err.println("Client " + clientId + " error: " + e.getMessage());
+        e.printStackTrace();
+    }
 }
