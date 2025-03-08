@@ -16,7 +16,6 @@ public class TCPClient {
 
             Thread sendThread = new Thread(() -> {
                 while (true) {
-                    System.out.print("You: ");
                     String userInput = scanner.nextLine();
                     if ("exit".equalsIgnoreCase(userInput)) {
                         System.out.println("Closing connection...");
@@ -37,6 +36,7 @@ public class TCPClient {
             while ((serverMessage = input.readLine()) != null) {
                 System.out.println("Server: " + serverMessage);
             }
+
         } catch (IOException e) {
             System.err.println("Connection error: " + e.getMessage());
         }

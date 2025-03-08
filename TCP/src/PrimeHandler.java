@@ -29,6 +29,7 @@ class PrimeHandler extends ClientHandler implements HasTitleContract {
 
                 output.println(primeMessage);
                 output.println(evenMessage);
+                output.println();
                 logToServer("Client " + clientId + " Process success");
             }
         } catch (IOException e) {
@@ -41,11 +42,13 @@ class PrimeHandler extends ClientHandler implements HasTitleContract {
         if (n <= 1) {
             return false;
         }
+
         for (int i = 2; i <= Math.sqrt(n); i++) {
             if (n % i == 0) {
                 return false;
             }
         }
+
         return true;
     }
 
