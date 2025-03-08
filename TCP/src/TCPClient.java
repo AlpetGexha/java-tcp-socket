@@ -34,7 +34,9 @@ public class TCPClient {
 
             String serverMessage;
             while ((serverMessage = input.readLine()) != null) {
-                System.out.println("Server: " + serverMessage);
+//                System.out.println("Server: " + serverMessage);
+                System.out.println(serverMessage);
+
             }
 
         } catch (IOException e) {

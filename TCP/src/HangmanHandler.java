@@ -6,7 +6,7 @@ import java.util.List;
 import java.util.Random;
 import java.util.Scanner;
 
-class HangmanHandler extends ClientHandler implements HasTitleContract {
+class HangmanHandler extends ClientHandler implements Runnable, HasTitleContract {
     private String word;
     private final List<Character> playerGuesses = new ArrayList<>();
     private int wrongCount = 0;
@@ -16,9 +16,14 @@ class HangmanHandler extends ClientHandler implements HasTitleContract {
     }
 
     @Override
+    public void run() {
+        handleClient();
+    }
+
+    @Override
     public void handleClient() {
         try {
-            output.println("1 or 2 Players ?");
+            output.println("1 or 2 Players?");
             String player = input.readLine();
 
             if ("1".equals(player)) {
@@ -31,13 +36,21 @@ class HangmanHandler extends ClientHandler implements HasTitleContract {
                 output.println("Player 2, good luck!");
             }
 
+            if (containsDigit(word)) {
+                output.println("The word contains digits, which is not allowed.");
+                return;
+            }
+
             while (true) {
                 displayHangman();
                 displayWordState();
 
+                output.println("Wrong guesses: " + wrongCount + "/6\n");
+
                 if (wrongCount >= 6) {
                     output.println("HANGMAN! YOU LOST!\n");
                     output.println("The word was: \"" + word + "\"");
+                    System.out.println("Client " + clientId + " lost the game.");
                     break;
                 }
 
@@ -45,16 +58,10 @@ class HangmanHandler extends ClientHandler implements HasTitleContract {
 
                 if (isWordGuessed()) {
                     output.println("\nCONGRATULATIONS, YOU WON!\n");
+                    System.out.println("Client " + clientId + " won the game.");
                     break;
                 }
 
-                output.println("What do you think the word is: ");
-                if (input.readLine().toLowerCase().equals(word)) {
-                    output.println("\nCONGRATULATIONS, YOU WON!\n");
-                    break;
-                } else {
-                    output.println("No! Try again.");
-                }
             }
         } catch (IOException e) {
             e.printStackTrace();
@@ -109,6 +116,15 @@ class HangmanHandler extends ClientHandler implements HasTitleContract {
         return true;
     }
 
+    private boolean containsDigit(String word) {
+        for (char c : word.toCharArray()) {
+            if (Character.isDigit(c)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
     @Override
     public String getTitle() {
         return "Hangman Game";
@@ -116,6 +132,6 @@ class HangmanHandler extends ClientHandler implements HasTitleContract {
 
     @Override
     public String getDescription() {
-        return "A simple hangman game. \n1 Player - The server will choose a random word from a list of words. \n2 Players - Player 1 will enter a word for Player 2 to guess.";
+        return "A simple hangman game.";
     }
 }
