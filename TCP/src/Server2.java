@@ -6,12 +6,12 @@ public class Server2 extends TCPServer {
         super(5061);
     }
 
+    public static void main(String[] args) {
+        new Server2().start();
+    }
+
     @Override
     protected ClientHandler createHandler(Socket socket, int clientId) throws IOException {
         return new HangmanHandler(socket, clientId);
-    }
-
-    public static void main(String[] args) {
-        new Server2().start();
     }
 }

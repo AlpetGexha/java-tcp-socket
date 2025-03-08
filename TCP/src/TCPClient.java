@@ -5,7 +5,7 @@ import java.util.Scanner;
 public class TCPClient {
     public static void main(String[] args) {
         String serverAddress = ServersType.LOCALHOST.getIpAddress();
-        int serverPort = 5061;
+        int serverPort = 5060;
 
         try (Socket socket = new Socket(serverAddress, serverPort);
              PrintWriter output = new PrintWriter(socket.getOutputStream(), true);
