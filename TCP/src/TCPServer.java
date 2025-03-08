@@ -18,7 +18,8 @@ public class TCPServer {
                 System.out.println("New client connected: Client " + clientId);
 
 //                new LiveChatHandler(socket, clientId).start();
-                new PrimeHandler(socket, clientId).start();
+//                new PrimeHandler(socket, clientId).start();
+                new HangmanHandler(socket, clientId).start();
 
             }
         } catch (IOException e) {
