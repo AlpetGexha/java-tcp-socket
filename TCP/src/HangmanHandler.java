@@ -7,8 +7,8 @@ import java.util.Random;
 import java.util.Scanner;
 
 class HangmanHandler extends ClientHandler implements Runnable, HasTitleContract {
-    private String word;
     private final List<Character> playerGuesses = new ArrayList<>();
+    private String word;
     private int wrongCount = 0;
 
     public HangmanHandler(Socket socket, int clientId) throws IOException {
@@ -23,48 +23,67 @@ class HangmanHandler extends ClientHandler implements Runnable, HasTitleContract
     @Override
     public void handleClient() {
         try {
-            output.println("1 or 2 Players?");
-            String player = input.readLine();
-
-            if ("1".equals(player)) {
-                output.println("Single Player Game\n");
-                word = getRandomWord();
-            } else {
-                output.println("Two Player Game\n");
-                output.println("Player 1, enter your word: ");
-                word = input.readLine().replaceAll("\\s", "").toLowerCase();
-                output.println("Player 2, good luck!");
-            }
-
-            if (containsDigit(word)) {
-                output.println("The word contains digits, which is not allowed.");
-                return;
-            }
-
             while (true) {
-                displayHangman();
-                displayWordState();
+                startGame();
 
-                output.println("Wrong guesses: " + wrongCount + "/6\n");
-
-                if (wrongCount >= 6) {
-                    output.println("HANGMAN! YOU LOST!\n");
-                    output.println("The word was: \"" + word + "\"");
-                    System.out.println("Client " + clientId + " lost the game.");
+                output.println("Press 'y' if you want to play again, any other key to exit.");
+                char response = input.readLine().trim().toLowerCase().charAt(0);
+                if (response != 'y') {
+                    output.println("Thank you for playing! Goodbye.");
+                    System.out.println("Client " + clientId + " dont want to play again.");
                     break;
                 }
 
-                if (!processPlayerGuess()) wrongCount++;
-
-                if (isWordGuessed()) {
-                    output.println("\nCONGRATULATIONS, YOU WON!\n");
-                    System.out.println("Client " + clientId + " won the game.");
-                    break;
-                }
+                System.out.println("Client " + clientId + " wants to play again.");
 
             }
         } catch (IOException e) {
             e.printStackTrace();
+        }
+    }
+
+    private void startGame() throws IOException {
+        playerGuesses.clear();
+        wrongCount = 0;
+
+        output.println("1 or 2 Players?");
+        String player = input.readLine();
+
+        if ("1".equals(player)) {
+            output.println("Single Player Game\n");
+            word = getRandomWord();
+        } else {
+            output.println("Two Player Game\n");
+            output.println("Player 1, enter your word: ");
+            word = input.readLine().replaceAll("\\s", "").toLowerCase();
+            output.println("Player 2, good luck!");
+        }
+
+        if (containsDigit(word)) {
+            output.println("The word contains digits, which is not allowed.");
+            return;
+        }
+
+        while (true) {
+            displayHangman();
+            displayWordState();
+
+            output.println("Wrong guesses: " + wrongCount + "/6\n");
+
+            if (wrongCount >= 6) {
+                output.println("HANGMAN! YOU LOST!\n");
+                output.println("The word was: \"" + word + "\"");
+                System.out.println("Client " + clientId + " lost the game.");
+                break;
+            }
+
+            if (!processPlayerGuess()) wrongCount++;
+
+            if (isWordGuessed()) {
+                output.println("\nCONGRATULATIONS, YOU WON!\n");
+                System.out.println("Client " + clientId + " won the game.");
+                break;
+            }
         }
     }
 
