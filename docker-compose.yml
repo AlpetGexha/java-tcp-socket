@@ -3,8 +3,15 @@ version: '3.8'
 services:
   tcp-server:
     build: .
+    container_name: tcp_server_container
     ports:
       - "5060:5060"
       - "5061:5061"
       - "5062:5062"
-    container_name: tcp_server_container
+    restart: unless-stopped
+    networks:
+      - custom_network
+
+networks:
+  custom_network:
+    driver: bridge
