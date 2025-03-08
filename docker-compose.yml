@@ -1,0 +1,8 @@
+version: '3.8'
+
+services:
+  tcp-server:
+    build: .
+    ports:
+      - "5060:5060"
+    container_name: tcp_server_container
