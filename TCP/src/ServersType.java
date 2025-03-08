@@ -1,7 +1,7 @@
 public enum ServersType {
     KALI_LINUX("192.168.58.102"),
     UBUNTU_LINUX("192.168.58.101"),
-    DEFAULT("192.168.56.1");
+    DEFAULT("192.168.56.1"),
     LOCALHOST("localhost");
 
     private final String ipAddress;
