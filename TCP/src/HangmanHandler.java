@@ -151,6 +151,6 @@ class HangmanHandler extends ClientHandler implements Runnable, HasTitleContract
 
     @Override
     public String getDescription() {
-        return "A simple hangman game.";
+        return "A simple hangman game. Test Deployee";
     }
 }
