@@ -1,0 +1,36 @@
+name: Trigger Name
+# Trigger this workflow on pushes to the specified branch
+on:
+  push:
+    branches:
+      - ["master"] # Replace with your branch name
+jobs:
+  deploy:
+    runs-on: ubuntu-latest # Run this job on the latest Ubuntu version
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2 # Check out your repository code
+
+      - name: SSH and run commands
+        env:
+          PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }} # Reference the private key stored in GitHub Secrets
+        run: |
+          echo "$PRIVATE_KEY" > private_key.pem # Write the private key to a file
+          chmod 600 private_key.pem # Set the appropriate permissions for the key file
+
+          # Establish an SSH connection and execute commands on the remote server
+          ssh -o StrictHostKeyChecking=no -i private_key.pem root@165.22.94.126 <<EOF
+            # Your server commands go here. Replace these commands with those relevant to your project.
+
+            cd java-tcp-socket
+      			git fetch
+      			git pull
+      			docker-compose up --build
+          EOF
+
+          rm -f private_key.pem # Remove the private key file after use for security
+    permissions:
+      contents: read
+      actions: write
+      id-token: write
